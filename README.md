@@ -1,8 +1,7 @@
+```plaintext
 flash_memory_manager/
-│
 ├── include/
-│ └── flash_memory_manager.hpp // Def of FlashMemoryManager class
-│
+│   └── flash_memory_manager.hpp  // Definition of FlashMemoryManager class
 └── src/
-├── flash_memory_manager.cpp // Impl of FlashMemoryManager class
-└── main.cpp // Demo app
+    ├── flash_memory_manager.cpp  // Implementation of FlashMemoryManager class
+    └── main.cpp                   // Demo application
