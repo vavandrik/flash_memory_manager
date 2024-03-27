@@ -21,13 +21,25 @@ void FlashMemoryManager::printBadBlocks() const {
 }
 
 bool FlashMemoryManager::checkBlock(int blockIndex) {
-    int bitIndex = blockIndex * 2;
-    if (checkedBlocks.test(bitIndex)) {
-        return blockStatus.test(bitIndex);
+    char testData[blockSize];
+    char readData[blockSize];
+    memset(testData, blockIndex % 256, blockSize);
+
+    if (!writeBlock(blockIndex, testData)) {
+        std::cout << "Write failed for block " << blockIndex << std::endl;
+        return false;
     }
-    // impl of block checking, assume that all block are correct
-    bool isGood = true;
+    if (!readBlock(blockIndex, readData)) {
+        std::cout << "Read failed for block " << blockIndex << std::endl;
+        return false;
+    }
+    if (memcmp(testData, readData, blockSize) != 0) {
+        std::cout << "Data mismatch for block " << blockIndex << std::endl;
+        return false;
+    }
+
+    int bitIndex = blockIndex * 2;
     checkedBlocks.set(bitIndex, true);
-    blockStatus.set(bitIndex, isGood);
-    return isGood;
+    blockStatus.set(bitIndex, true);
+    return true;
 }
